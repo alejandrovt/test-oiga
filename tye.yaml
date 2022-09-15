@@ -1,0 +1,9 @@
+name: microservice
+extensions:
+- name: dapr
+  components-path: "./components/"
+services:
+- name: userregister
+  project: oiga.test.user.register\oiga.test.user.register.csproj
+- name: usersearch
+  project: oiga.test.user.search\oiga.test.user.search.csproj
