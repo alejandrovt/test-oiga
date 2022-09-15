@@ -8,15 +8,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{A4EB9598
 		tye.yaml = tye.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oiga.test.user.register", "oiga.test.user.register\oiga.test.user.register.csproj", "{B5174861-D3E1-488F-A52B-D4B58BF577B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "oiga.test.user.register", "oiga.test.user.register\oiga.test.user.register.csproj", "{B5174861-D3E1-488F-A52B-D4B58BF577B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oiga.test.user.search", "oiga.test.user.search\oiga.test.user.search.csproj", "{B8B847B7-22E7-4BEC-B5C8-69144AEE63A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "oiga.test.user.search", "oiga.test.user.search\oiga.test.user.search.csproj", "{B8B847B7-22E7-4BEC-B5C8-69144AEE63A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oiga.test.user.common", "oiga.test.user.common\oiga.test.user.common.csproj", "{6537B230-443E-483D-BECC-58318D984F0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "oiga.test.user.common", "oiga.test.user.common\oiga.test.user.common.csproj", "{6537B230-443E-483D-BECC-58318D984F0E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{B30E56CE-8DAE-4760-9543-36546AC71D65}"
 	ProjectSection(SolutionItems) = preProject
-		pubsub.yaml = pubsub.yaml
+		components\pubsub.yaml = components\pubsub.yaml
 	EndProjectSection
 EndProject
 Global

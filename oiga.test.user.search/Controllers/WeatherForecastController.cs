@@ -42,7 +42,7 @@ namespace oiga.test.user.search.Controllers
         [HttpPost("userregistered")]
         public void UserRegistered(UserSearch userSearch)
         {
-            Console.WriteLine("-----------------------------------------Search 4------------");
+            Console.WriteLine("-----------------------------------------Search Registes User 1------------");
             Console.WriteLine(userSearch.FullName);
         }
     }
