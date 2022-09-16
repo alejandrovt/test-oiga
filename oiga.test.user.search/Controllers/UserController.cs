@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using oiga.test.user.common;
+using oiga.test.user.search.Common;
 using oiga.test.user.search.Data;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace oiga.test.user.search.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IEnumerable<UserSearch>> Search(string query, [FromServices] ApplicationDbContext context, [FromServices]  IConfiguration configuration)
+        public IEnumerable<UserSearch> Search([FromServices] ApplicationDbContext context, [FromServices]  IConfiguration configuration, int page, string query = "")
         {
             var sql = @$"select id, full_name FullName, user_name UserName
                          from usersearch";
@@ -55,8 +56,15 @@ namespace oiga.test.user.search.Controllers
 	                        group by t.id
                         ) t2
                         inner join usersearch s2 on s2.id=t2.id
-                        order by s2.full_name, s2.user_name";
+                        order by s2.full_name, s2.user_name
+                        ";
             }
+
+            var rowIni = (page>1 ? page-1 : 0) * Constants.PAGE_SIZE;
+            sql += $"OFFSET {rowIni} ROWS FETCH NEXT {Constants.PAGE_SIZE} ROWS ONLY";
+
+            Console.WriteLine("-----------------------------------------Search: Search User 5------------");
+            Console.WriteLine(sql);
 
             var users = context.ExecuteQuery<UserSearch>(sql, configuration);
 

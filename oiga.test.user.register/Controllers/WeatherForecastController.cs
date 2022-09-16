@@ -31,7 +31,7 @@ namespace oiga.test.user.register.Controllers
         {
             var userSearch = new UserSearch{ 
                 FullName= "Alejandro Villada Trejos",
-                Id = "1",
+                Id = 1,
                 UserName = "alejandrovt"
             };
 
