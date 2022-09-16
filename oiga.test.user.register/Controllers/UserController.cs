@@ -2,7 +2,10 @@
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using oiga.test.user.common;
+using oiga.test.user.register.Data;
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace oiga.test.user.register.Controllers
@@ -13,10 +16,12 @@ namespace oiga.test.user.register.Controllers
     {
         [Topic("messagebus", "userregister")]
         [HttpPost("register")]
-        public async Task Register(User user, [FromServices] DaprClient daprClient)
+        public async Task Register(User user, 
+            [FromServices] DaprClient daprClient, 
+            [FromServices] ApplicationDbContext context)
         {
-            Console.WriteLine("-----------------------------------------User Register 1------------");
-            Console.WriteLine(user.FullName);
+            context.EntityUsers.Add(user);
+            context.SaveChanges();
 
             var userSearch = new UserSearch
             {

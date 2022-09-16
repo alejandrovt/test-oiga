@@ -7,3 +7,5 @@ services:
   project: oiga.test.user.register\oiga.test.user.register.csproj
 - name: usersearch
   project: oiga.test.user.search\oiga.test.user.search.csproj
+- name: userfront
+  project: oiga.test.user.front\oiga.test.user.front.csproj
