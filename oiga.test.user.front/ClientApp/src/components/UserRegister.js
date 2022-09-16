@@ -7,6 +7,15 @@ export const UserRegister = ({ searchUsers }) => {
     const [txtPhone, setPhoneState] = useState('');
 
     const onClickRegister = (ev) => {
+        if (txtFullName.trim() === '') {
+            alert('Digit full name');
+            return;
+        }
+        if (txtUserName.trim() === '') {
+            alert('Digit user name');
+            return;
+        }
+
         const user = {
             fullName: txtFullName,
             userName: txtUserName,
@@ -14,9 +23,16 @@ export const UserRegister = ({ searchUsers }) => {
         };
 
         axios.post(`user/register`, user).then((res) => {
-            setTimeout(() => {
-                searchUsers();
-            }, 200);
+            if (res.data === '') {
+                setTimeout(() => {
+                    searchUsers();
+                    setFullNameState('');
+                    setUserNameState('');
+                    setPhoneState('');
+                }, 200);
+            } else {
+                alert(res.data);
+            }
         });
     };
 

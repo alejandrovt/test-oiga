@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { UserRegister } from './UserRegister';
+import { UserDetail } from './UserDetail';
 
 export const UserPage = () => {
-    const [users, setUsersState] = useState();
+    const [users, setUsersState] = useState([]);
+    const [userId, setUserIdState] = useState();
     const [query, setQueyState] = useState('');
     const [page, setPageState] = useState(1);
+    const [hasMore, setHasMoreState] = useState(true);
 
     useEffect(() => {
-        if (page) {
+        if (page && page > 1) {
             searchUsers(page);
         }
     }, [page]);
 
     const onClickSearch = (ev) => {
+        setPageState(1);
+        setUsersState([]);
+        setHasMoreState(true);
         searchUsers(page);
     };
 
@@ -22,23 +29,23 @@ export const UserPage = () => {
         setQueyState(ev.target.value);
     };
 
-    const onClickPrevoious = (ev) => {
-        if (page <= 1) {
-            return;
-        }
-        const vPage = page - 1;
-        setPageState(vPage);
-    };
-
-    const onClickNext = (ev) => {
+    const onNext = () => {
         const vPage = page + 1;
         setPageState(vPage);
     };
 
+    const onClickDetailUser = (pId) => {
+        setUserIdState(pId);
+    };
+
     const searchUsers = (pPage) => {
-        console.log(pPage);
         axios.get(`user/search?page=${pPage}&query=${query}`).then((response) => {
-            setUsersState(response.data);
+            if (response.data.length === 0) {
+                setHasMoreState(false);
+            } else {
+                const usersT = users.concat(response.data);
+                setUsersState(usersT);
+            }
         });
     };
 
@@ -53,45 +60,44 @@ export const UserPage = () => {
             <button type='button' onClick={onClickSearch}>
                 Search
             </button>
-            <table className='table table-striped' aria-labelledby='tabelLabel'>
-                <thead>
-                    <tr>
-                        <th>Full Name</th>
-                        <th>User Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users ? (
-                        <>
-                            {users.length == 0 ? (
-                                <tr>
-                                    <td colSpan={2}>No se encontraron resultados</td>
-                                </tr>
-                            ) : (
-                                users.map((user) => (
-                                    <tr key={user.id}>
-                                        <td>{user.fullName}</td>
-                                        <td>{user.userName}</td>
-                                    </tr>
-                                ))
-                            )}
-                        </>
-                    ) : (
+            <div id='scrollableDiv' style={{ height: '300px', overflow: 'scroll' }}>
+                <table className='table table-striped' aria-labelledby='tabelLabel'>
+                    <thead>
                         <tr>
-                            <td colSpan={2}>Loading</td>
+                            <th>Full Name</th>
+                            <th>User Name</th>
+                            <th></th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
-            <div>
-                <button type='button' onClick={onClickPrevoious} style={{ width: '100px' }}>
-                    previous
-                </button>
-                &nbsp;&nbsp;&nbsp;
-                <button type='button' onClick={onClickNext} style={{ width: '100px' }}>
-                    next
-                </button>
+                    </thead>
+                    <tbody>
+                        {users && (
+                            <>
+                                {users.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={2}>No se encontraron resultados</td>
+                                    </tr>
+                                ) : (
+                                    <InfiniteScroll dataLength={users.length} next={onNext} hasMore={hasMore} loader={<h4>Loading...</h4>} scrollableTarget='scrollableDiv' endMessage={<h4>End Results</h4>}>
+                                        {users.map((user) => (
+                                            <tr key={user.id}>
+                                                <td>{user.fullName}</td>
+                                                <td>{user.userName}</td>
+                                                <td>
+                                                    <button type='button' onClick={() => onClickDetailUser(user.id)}>
+                                                        view
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </InfiniteScroll>
+                                )}
+                            </>
+                        )}
+                    </tbody>
+                </table>
             </div>
+
+            <UserDetail userId={userId} />
         </div>
     );
 };
